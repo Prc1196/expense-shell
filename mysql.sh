@@ -33,20 +33,20 @@ echo "Script started executing at: $TIMESTAMP" &>>$LOG_FILE_NAME
 
 CHECK_ROOT
 
-dnf install mysql-server -y &>>LOG_FILE_NAME
+dnf install mysql-server -y &>>$LOG_FILE_NAME
 VALIDATE $? "Installing MySQL Server"
 
-systemctl enable mysqld &>>LOG_FILE_NAME
+systemctl enable mysqld &>>$LOG_FILE_NAME
 VALIDATE $? "Enabling MySQL Server"
 
-systemctl start mysqld &>>LOG_FILE_NAME
+systemctl start mysqld &>>$LOG_FILE_NAME
 VALIDATE $? "Startnig MySQL Server"
 
 mysql -h mysql.prcdaws82s.online -u root -pExpenseApp@1 -e 'show databases;'
 
-if [ $? -ne 0]
+if [ $? -ne 0 ]
 then
-    echo "MySQL Root password not setup" &>>LOG_FILE_NAME
+    echo "MySQL Root password not setup" &>>$LOG_FILE_NAME
     mysql_secure_installation --set-root-pass ExpenseApp@1
     VALIDATE $? "Setting  Root Password"
 else 
