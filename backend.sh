@@ -21,7 +21,7 @@ VALIDATE(){
     fi
 }
 
- CSHECK_ROOT(){
+ CHECK_ROOT(){
     if [ $USERID -ne 0 ]
     then
         echo "ERROR:: You must have the sudo access to execute this srcipt"
@@ -31,7 +31,7 @@ VALIDATE(){
  
 echo "Script started executing at: $TIMESTAMP" &>>$LOG_FILE_NAME
 
-
+CHECK_ROOT
 
 dnf module disable nodejs -y &>>$LOG_FILE_NAME
 VALIDATE $? "disabling existing default NodeJS"
