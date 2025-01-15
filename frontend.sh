@@ -35,3 +35,24 @@ CHECK_ROOT
 
 dnf install nginx -y
 VALIDATE $? "Installing Nginx Server"
+
+systemctl enable nginx
+VALIDATE $? "enabling Nginx server"
+
+systemctl start nginx
+VALIDATE $? "Starting Nginx server"
+
+rm -rf /usr/share/nginx/html/*
+VALIDATE $? "Removing existing version of code"
+
+curl -o /tmp/frontend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
+VALIDATE $? "Downloading latest code"
+
+cd /usr/share/nginx/html
+VALIDATE $? "Moving to HTML Directory"
+
+unzip /tmp/frontend.zip
+VALIDATE $? "unzipping the frontend code"
+
+systemctl restart nginx
+VALIDATE $? "Restarting nginx"
