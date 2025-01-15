@@ -31,7 +31,7 @@ VALIDATE(){
  
 echo "Script started executing at: $TIMESTAMP" &>>$LOG_FILE_NAME
 
-CHECK_ROOT
+
 
 dnf module disable nodejs -y &>>$LOG_FILE_NAME
 VALIDATE $? "disabling existing default NodeJS"
@@ -42,8 +42,14 @@ VALIDATE $? "enabling Node Js 20"
 dnf install nodejs -y &>>$LOG_FILE_NAME
 VALIDATE $? "installing NodeJ"
 
-useradd expense &>>$LOG_FILE_NAME
-VALIDATE $? "Adding expense user"
+id expense &>>$LOG_FILE_NAME
+if [ $? -ne 0 ]
+then
+    useradd expense &>>$LOG_FILE_NAME
+    VALIDATE $? "Adding expense user"
+else   
+    echo -e "expense user already exists ... $Y SKIPPING $N"
+fi
 
 mkdir /app
 VALIDATE $? "Creating app directory"
